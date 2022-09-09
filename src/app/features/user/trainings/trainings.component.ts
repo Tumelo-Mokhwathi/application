@@ -18,6 +18,7 @@ export class TrainingsComponent implements OnInit, AfterViewInit {
   training: any;
   searchText: string = '';
   results: any;
+  seletectedDate: any;
   searchForm: FormGroup;
   createForm: FormGroup;
   updateForm: FormGroup;
@@ -160,6 +161,16 @@ export class TrainingsComponent implements OnInit, AfterViewInit {
 
   search() {
     return this.results.filter(s => s.name.toLowerCase().includes(this.searchText.toLowerCase()))
+  }
+
+  setDate(value) {
+    if (value) {
+      var date = ("0" + value.getDate()).slice(-2);
+      var month = ("0" + (value.getMonth() + 1)).slice(-2);
+      var year = value.getFullYear();
+
+      this.seletectedDate = date + "/" + month + "/" + year;
+    }
   }
 
   exportToCsv() {
