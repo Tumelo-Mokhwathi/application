@@ -44,7 +44,7 @@
                 <td>{{result.delegatePhysicalAddress}}</td>
                 <td>{{result.delegatePostalAddress}}</td>
                 <td class="row">
-                  <div class="inline">
+                  <div class="col">
                     <button class="btn btn-success" data-toggle="modal" data-target="#createModal" (click)="onChange(result)">Edit</button>
                     <button class="btn btn-danger" (click)="deleteDelegate(result)">Delete</button>
                   </div>
@@ -105,7 +105,12 @@
                   <label>Dietary Requirement:</label>
                 </div>
                 <div class="form-group col-8"> 
-                  <input type="text" formControlName="dietaryRequirement" class="form-control" />
+                  <div class="input-group">
+                    <select class="browser-default custom-select" formControlName="trainingVenueSelected" #selectElem (change)="setChain(selectElem.value)">
+                      <option selected disabled>Select Dietary Requirement</option>
+                      <option *ngFor="let value of dietary" value="{{value.name}}">{{value.name}}</option>
+                    </select>
+                  </div>
                 </div>
               </div>
               <div class="form-row">

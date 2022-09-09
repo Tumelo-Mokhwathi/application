@@ -10,19 +10,20 @@ import { DatePipe } from '@angular/common';
   templateUrl: './courses.component.html',
   styleUrls: ['./courses.component.css']
 })
-export class CoursesComponent implements OnInit , AfterViewInit {
-  base_url:string;
+export class CoursesComponent implements OnInit, AfterViewInit {
+  base_url: string;
   dtOptions: DataTables.Settings = {};
   data: any;
   course: any;
   searchText: string = '';
   results: any;
+  venues: any[];
   searchForm: FormGroup;
   createForm: FormGroup;
   updateForm: FormGroup;
   dtTrigger: Subject<any> = new Subject<any>();
   constructor(private formBuilder: FormBuilder, private http: HttpClient) { }
-  
+
   ngOnInit() {
     this.base_url = 'https://localhost:44357/api/courses';
     this.buildForm();
@@ -32,6 +33,12 @@ export class CoursesComponent implements OnInit , AfterViewInit {
       pageLength: 10
     };
     this.LoadCourses();
+    this.venues = [
+      { id: 1, venue: "Pretoria" },
+      { id: 2, venue: "Sandton" },
+      { id: 3, venue: "Midrand" },
+      { id: 4, venue: "Centurion" }
+    ];
   }
 
   ngAfterViewInit() {
@@ -96,7 +103,7 @@ export class CoursesComponent implements OnInit , AfterViewInit {
         'trainingVenueSelected': this.createForm.value.trainingVenueSelected,
         'isTrainingFreeOrPaid': this.createForm.value.isTrainingFreeOrPaid
       };
-  
+
       this.http.put(`${this.base_url}/` + this.course.courseID, updatedUser).subscribe((response: Response) => {
         this.LoadCourses();
         this.resetCreateCourse();
@@ -110,7 +117,7 @@ export class CoursesComponent implements OnInit , AfterViewInit {
         'trainingVenueSelected': this.createForm.value.trainingVenueSelected,
         'isTrainingFreeOrPaid': this.createForm.value.isTrainingFreeOrPaid
       };
-  
+
       this.http.post(`${this.base_url}`, course).subscribe((response: Response) => {
         this.LoadCourses();
         this.resetCreateCourse();

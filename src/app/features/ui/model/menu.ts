@@ -3,27 +3,27 @@ import { NavItem } from './nav-item';
 export let menu: NavItem[] = [
   {
     displayName: 'Home',
-    iconName: 'dashboard',
+    iconName: 'account_balance',
     route: 'dashboard'
   },
   {
-    displayName: 'User',
-    iconName: 'face',
+    displayName: 'Menu',
+    iconName: 'dashboard',
     route: 'Users_',
     children: [
       {
         displayName: 'Courses',
-        iconName: 'account_box',
+        iconName: 'assignment',
         route: 'users/courses'
       },
       {
         displayName: 'Training',
-        iconName: 'account_box',
+        iconName: 'assignment',
         route: 'users/trainings'
       },
       {
         displayName: 'Registration',
-        iconName: 'account_box',
+        iconName: 'assignment',
         route: 'users/registration'
       }
     ]

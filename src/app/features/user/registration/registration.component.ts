@@ -15,6 +15,7 @@ export class RegistrationComponent implements OnInit , AfterViewInit {
   dtOptions: DataTables.Settings = {};
   data: any;
   delegate: any;
+  dietary: any[];
   searchText: string = '';
   results: any;
   searchForm: FormGroup;
@@ -32,6 +33,12 @@ export class RegistrationComponent implements OnInit , AfterViewInit {
       pageLength: 10
     };
     this.LoadDelegates();
+    this.dietary = [
+      { id: 1, name: "Vegetarian," },
+      { id: 2, name: "Halal," },
+      { id: 3, name: "Vegan" },
+      { id: 4, name: "Other" }
+    ];
   }
 
   ngAfterViewInit() {

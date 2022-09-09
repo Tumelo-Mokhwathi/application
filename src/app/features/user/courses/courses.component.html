@@ -38,7 +38,7 @@
                 <td>{{result.trainingVenueSelected}}</td>
                 <td>{{statusFilter(result.isTrainingFreeOrPaid)}}</td>
                 <td class="row">
-                  <div class="inline">
+                  <div class="col">
                     <button class="btn btn-success" data-toggle="modal" data-target="#createModal" (click)="onChange(result)">Edit</button>
                     <button class="btn btn-danger" (click)="deleteCourse(result)">Delete</button>
                   </div>
@@ -88,10 +88,15 @@
             </div>
             <div class="form-row">
               <div class="form-group col-4">
-                <label>Training Venue Selected:</label>
+                <label>Select Training Venue:</label>
               </div>
               <div class="form-group col-8"> 
-                <input type="text" formControlName="trainingVenueSelected" class="form-control"/>
+                <div class="input-group">
+                  <select class="browser-default custom-select" formControlName="trainingVenueSelected" #selectElem (change)="setChain(selectElem.value)">
+                    <option selected disabled>Select Training Venue</option>
+                    <option *ngFor="let venue of venues" value="{{venue.venue}}">{{venue.venue}}</option>
+                  </select>
+                </div>
               </div>
             </div>
             <div class="form-row">
