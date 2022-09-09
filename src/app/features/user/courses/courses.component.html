@@ -1,0 +1,113 @@
+<div class="container-fluid">
+  <div class="row mt-3">
+    <div class="col-12">
+      <h3 class="text-center">Courses</h3>
+    </div>
+  </div>
+    <div class="mt-3">
+      <div class="card">
+        <div class="card-header">
+          <div class="text-right inline">
+            <button class="btn btn-light" data-toggle="modal" data-target="#createModal">
+              <i class="fa fa-plus fa-sm"></i>
+              Add</button>
+            <button class="btn btn-light" (click)="exportToCsv()">
+              <i class="fa fa-download fa-sm"></i>
+              Export</button>
+          </div>
+        </div>
+        <div class="card-body">
+          <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="row-border hover">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Course Code</th>
+                <th>Course Description</th>
+                <th>Course Name</th>
+                <th>Training Venue</th>
+                <th>Is Training Free Or Paid?</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let result of results">
+                <td>{{result.courseID}}</td>
+                <td>{{result.courseCode}}</td>
+                <td>{{result.courseDescription}}</td>
+                <td>{{result.courseName}}</td>
+                <td>{{result.trainingVenueSelected}}</td>
+                <td>{{statusFilter(result.isTrainingFreeOrPaid)}}</td>
+                <td class="row">
+                  <div class="inline">
+                    <button class="btn btn-success" data-toggle="modal" data-target="#createModal" (click)="onChange(result)">Edit</button>
+                    <button class="btn btn-danger" (click)="deleteCourse(result)">Delete</button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="createModal" tabindex="-1" data-backdrop="false" role="dialog" aria-labelledby="createModalLabel" aria-hidden="true">
+    <form [formGroup]="createForm" (ngSubmit)="createCourse()">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Course</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="form-row">
+              <div class="form-group col-4">
+                <label>Course Name:</label>
+              </div>
+              <div class="form-group col-8"> 
+                <input type="text" formControlName="courseName" class="form-control" />
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group col-4">
+                <label>Course Description:</label>
+              </div>
+              <div class="form-group col-8"> 
+                <input type="text" formControlName="courseDescription" class="form-control" />
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group col-4">
+                <label>Course Code:</label>
+              </div>
+              <div class="form-group col-8"> 
+                <input type="text" formControlName="courseCode" class="form-control"/>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group col-4">
+                <label>Training Venue Selected:</label>
+              </div>
+              <div class="form-group col-8"> 
+                <input type="text" formControlName="trainingVenueSelected" class="form-control"/>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group col-4">
+                <label>Is Free Or Paid:</label>
+              </div>
+              <div class="form-group col-8"> 
+                <input type="checkbox" formControlName="isTrainingFreeOrPaid" />
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="createCourse()">Save</button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>

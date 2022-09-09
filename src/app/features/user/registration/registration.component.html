@@ -1,0 +1,143 @@
+<div class="container-fluid">
+  <div class="row mt-3">
+    <div class="col-12">
+      <h3 class="text-center">Registration</h3>
+    </div>
+  </div>
+    <div class="mt-3">
+      <div class="card">
+        <div class="card-header">
+          <div class="text-right inline">
+            <button class="btn btn-light" data-toggle="modal" data-target="#createModal">
+              <i class="fa fa-plus fa-sm"></i>
+              Add</button>
+            <button class="btn btn-light" (click)="exportToCsv()">
+              <i class="fa fa-download fa-sm"></i>
+              Export</button>
+          </div>
+        </div>
+        <div class="card-body">
+          <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="row-border hover">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Phone Number</th>
+                <th>Email</th>
+                <th>Dietary Requirement</th>
+                <th>Company Name</th>
+                <th>Physical Address</th>
+                <th>Postal Address</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let result of results">
+                <td>{{result.delegateID}}</td>
+                <td>{{result.firstName}}</td>
+                <td>{{result.lastName}}</td>
+                <td>{{result.phoneNumber}}</td>
+                <td>{{result.email}}</td>
+                <td>{{result.dietaryRequirement}}</td>
+                <td>{{result.companyName}}</td>
+                <td>{{result.delegatePhysicalAddress}}</td>
+                <td>{{result.delegatePostalAddress}}</td>
+                <td class="row">
+                  <div class="inline">
+                    <button class="btn btn-success" data-toggle="modal" data-target="#createModal" (click)="onChange(result)">Edit</button>
+                    <button class="btn btn-danger" (click)="deleteDelegate(result)">Delete</button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="createModal" tabindex="-1" data-backdrop="false" role="dialog" aria-labelledby="createModalLabel" aria-hidden="true">
+    <form [formGroup]="createForm" (ngSubmit)="createDelegate()">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Registration</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="form-row">
+              <div class="form-group col-4">
+                <label>First Name:</label>
+              </div>
+              <div class="form-group col-8"> 
+                <input type="text" formControlName="firstName" class="form-control" />
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group col-4">
+                <label>Last  Name:</label>
+              </div>
+              <div class="form-group col-8"> 
+                <input type="text" formControlName="lastName" class="form-control" />
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group col-4">
+                <label>Phone No.:</label>
+              </div>
+              <div class="form-group col-8"> 
+                <input type="text" formControlName="phoneNumber" class="form-control" />
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group col-4">
+                <label>Email:</label>
+              </div>
+              <div class="form-group col-8"> 
+                <input type="text" formControlName="email" class="form-control"/>
+              </div>
+            </div>
+              <div class="form-row">
+                <div class="form-group col-4">
+                  <label>Dietary Requirement:</label>
+                </div>
+                <div class="form-group col-8"> 
+                  <input type="text" formControlName="dietaryRequirement" class="form-control" />
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group col-4">
+                  <label>Company  Name:</label>
+                </div>
+                <div class="form-group col-8"> 
+                  <input type="text" formControlName="companyName" class="form-control" />
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group col-4">
+                  <label>Physical Address:</label>
+                </div>
+                <div class="form-group col-8"> 
+                  <input type="text" formControlName="delegatePhysicalAddress" class="form-control" />
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group col-4">
+                  <label>Postal Address:</label>
+                </div>
+                <div class="form-group col-8"> 
+                  <input type="text" formControlName="delegatePostalAddress" class="form-control"/>
+                </div>
+              </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="createDelegate()">Save</button>
+          </div>
+        </div>
+        </div>
+      </div>
+    </form>
+  </div>

@@ -1,0 +1,43 @@
+html, body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+video {
+    max-width: 100%;
+    height: auto;
+}
+
+html {
+    width: 100%;
+    background-color: #ffffff;
+}
+
+h1 {
+    font-size: 34pt;
+}
+
+h2 {
+    font-size: 26pt;
+}
+
+h3 {
+    font-size: 18pt;
+}
+
+h4 {
+  font-size: 14pt;
+}
+ 
+.mat-form-field-flex {
+  background-color: #ffffff !important;
+}
