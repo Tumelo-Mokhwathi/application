@@ -123,9 +123,9 @@ export class TrainingsComponent implements OnInit, AfterViewInit {
         'trainingVenue': this.createForm.value.trainingVenue,
         'noOfSeatLeft': this.createForm.value.noOfSeatLeft,
         'trainingCost': this.createForm.value.trainingCost,
-        'closingDate': this.convertDateToLongString(this.createForm.value.trainingDate)
+        'closingDate': this.convertDateToLongString(this.createForm.value.closingDate)
       };
-  
+      console.log(course);
       this.http.post(`${this.base_url}`, course).subscribe((response: Response) => {
         this.LoadTrainings();
         this.resetTraining();
@@ -146,7 +146,7 @@ export class TrainingsComponent implements OnInit, AfterViewInit {
 
   convertDateToLongString(date) {
     const formattedDate: DatePipe = new DatePipe('en-US');
-    const newDate = formattedDate.transform(date, 'dd/MM/yyyy hh:mm:ss');
+    const newDate = formattedDate.transform(date, 'yyyy-MM-dd hh:mm:ss');
     return new Date(newDate.toString().split('GMT')[0]+' UTC').toISOString()
   }
 
