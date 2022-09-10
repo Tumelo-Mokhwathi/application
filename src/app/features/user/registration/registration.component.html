@@ -17,41 +17,55 @@
           </div>
         </div>
         <div class="card-body">
-          <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="row-border hover">
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>First Name</th>
-                <th>Last Name</th>
-                <th>Phone Number</th>
-                <th>Email</th>
-                <th>Dietary Requirement</th>
-                <th>Company Name</th>
-                <th>Physical Address</th>
-                <th>Postal Address</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let result of results">
-                <td>{{result.delegateID}}</td>
-                <td>{{result.firstName}}</td>
-                <td>{{result.lastName}}</td>
-                <td>{{result.phoneNumber}}</td>
-                <td>{{result.email}}</td>
-                <td>{{result.dietaryRequirement}}</td>
-                <td>{{result.companyName}}</td>
-                <td>{{result.delegatePhysicalAddress}}</td>
-                <td>{{result.delegatePostalAddress}}</td>
-                <td class="row">
-                  <div class="col">
-                    <button class="btn btn-success" data-toggle="modal" data-target="#createModal" (click)="onChange(result)">Edit</button>
-                    <button class="btn btn-danger" (click)="deleteDelegate(result)">Delete</button>
-                  </div>
-                </td>
-              </tr>
-            </tbody>
+          <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+            <ng-container matColumnDef="firstName">
+              <th mat-header-cell *matHeaderCellDef>First Name</th>
+              <td mat-cell *matCellDef="let element"> {{element.firstName}} </td>
+            </ng-container>
+  
+            <ng-container matColumnDef="lastName">
+              <th mat-header-cell *matHeaderCellDef>Last Name</th>
+              <td mat-cell *matCellDef="let element"> {{element.lastName}} </td>
+            </ng-container>
+  
+            <ng-container matColumnDef="phoneNumber">
+              <th mat-header-cell *matHeaderCellDef>Phone Number</th>
+              <td mat-cell *matCellDef="let element"> {{element.phoneNumber}} </td>
+            </ng-container>
+  
+            <ng-container matColumnDef="email">
+              <th mat-header-cell *matHeaderCellDef>Email</th>
+              <td mat-cell *matCellDef="let element"> {{element.email}} </td>
+            </ng-container>
+  
+            <ng-container matColumnDef="dietaryRequirement">
+              <th mat-header-cell *matHeaderCellDef>Dietary Requirement</th>
+              <td mat-cell *matCellDef="let element"> {{element.dietaryRequirement}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="companyName">
+              <th mat-header-cell *matHeaderCellDef>Company Name</th>
+              <td mat-cell *matCellDef="let element"> {{element.companyName}} </td>
+            </ng-container>
+  
+            <ng-container matColumnDef="action">
+              <th mat-header-cell *matHeaderCellDef>Action</th>
+              <td mat-cell *matCellDef="let element">
+                <button mat-icon-button color="primary" data-toggle="modal" data-target="#createModal" (click)="onChange(element)" title="Edit">
+                  <mat-icon>edit</mat-icon>
+                </button>
+  
+                <button mat-icon-button color="primary" (click)="deleteCourse(element)" title="Edit">
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </td>
+            </ng-container>
+  
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
           </table>
+  
+          <mat-paginator [length]="100" [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
         </div>
       </div>
     </div>
@@ -106,7 +120,7 @@
                 </div>
                 <div class="form-group col-8"> 
                   <div class="input-group">
-                    <select class="browser-default custom-select" formControlName="trainingVenueSelected" #selectElem (change)="setChain(selectElem.value)">
+                    <select class="browser-default custom-select" formControlName="dietaryRequirement" #selectElem (change)="setChain(selectElem.value)">
                       <option selected disabled>Select Dietary Requirement</option>
                       <option *ngFor="let value of dietary" value="{{value.name}}">{{value.name}}</option>
                     </select>

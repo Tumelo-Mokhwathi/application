@@ -1,16 +1,24 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
-import { FormGroup, FormBuilder } from '@angular/forms';
+import { Component, AfterViewInit, OnInit, ViewChild } from '@angular/core';
+import { MatTableDataSource } from '@angular/material/table';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
 import { HttpClient } from '@angular/common/http';
 import { Subject } from 'rxjs';
 import { ExportToCsv } from 'export-to-csv';
 import { DatePipe } from '@angular/common';
 
+declare var $: any;
 @Component({
   selector: 'app-companies',
   templateUrl: './courses.component.html',
   styleUrls: ['./courses.component.css']
 })
 export class CoursesComponent implements OnInit, AfterViewInit {
+  @ViewChild(MatSort, { static: false }) sort: MatSort;
+  @ViewChild(MatPaginator, { static: false }) pagination: MatPaginator;
+  displayedColumns: string[] = ['courseID', 'courseCode', 'courseName', 'courseDescription', 'trainingVenueSelected', 'isTrainingFreeOrPaid', 'action'];
+  dataSource = new MatTableDataSource();
   base_url: string;
   dtOptions: DataTables.Settings = {};
   data: any;
@@ -43,6 +51,8 @@ export class CoursesComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit() {
     this.dtTrigger.next();
+    this.dataSource.sort = this.sort;
+    this.dataSource.paginator = this.pagination;
   }
 
   ngOnDestroy(): void {
@@ -140,6 +150,7 @@ export class CoursesComponent implements OnInit, AfterViewInit {
     this.http.get(`${this.base_url}`).subscribe((response: Response) => {
       this.data = response;
       this.results = this.data.result;
+      this.reacreateMatTableData(this.results);
     });
   }
 
@@ -151,6 +162,12 @@ export class CoursesComponent implements OnInit, AfterViewInit {
       trainingVenueSelected: '',
       isTrainingFreeOrPaid: ''
     });
+  }
+
+  reacreateMatTableData(data) {
+    this.dataSource = new MatTableDataSource(data);
+    this.dataSource.sort = this.sort;
+    this.dataSource.paginator = this.pagination;
   }
 
   resetText() {

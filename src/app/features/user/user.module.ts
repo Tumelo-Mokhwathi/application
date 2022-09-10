@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { DataTablesModule } from 'angular-datatables';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { MatPaginatorModule } from '@angular/material/paginator';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
@@ -38,6 +39,7 @@ export const routes = [
       MatTableModule,
       ReactiveFormsModule,
       FormsModule,
+      MatPaginatorModule,
       MatDatepickerModule,
       MatNativeDateModule,
       RouterModule.forChild(routes)

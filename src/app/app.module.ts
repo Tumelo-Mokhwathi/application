@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatChipsModule } from '@angular/material/chips';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
@@ -30,6 +31,7 @@ import { FeaturesComponent } from './features/features.component';
       MatToolbarModule,
       MatSidenavModule,
       MatListModule,
+      MatChipsModule,
       MatIconModule
   ],
   providers: [],

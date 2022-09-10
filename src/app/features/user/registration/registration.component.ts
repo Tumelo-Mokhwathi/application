@@ -1,16 +1,24 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
-import { FormGroup, FormBuilder } from '@angular/forms';
+import { Component, AfterViewInit, OnInit, ViewChild } from '@angular/core';
+import { MatTableDataSource } from '@angular/material/table';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
 import { HttpClient } from '@angular/common/http';
 import { Subject } from 'rxjs';
 import { ExportToCsv } from 'export-to-csv';
 import { DatePipe } from '@angular/common';
 
+declare var $: any;
 @Component({
   selector: 'app-companies',
   templateUrl: './registration.component.html',
   styleUrls: ['./registration.component.css']
 })
 export class RegistrationComponent implements OnInit , AfterViewInit {
+  @ViewChild(MatSort, { static: false }) sort: MatSort;
+  @ViewChild(MatPaginator, { static: false }) pagination: MatPaginator;
+  displayedColumns: string[] = ['firstName', 'lastName', 'phoneNumber', 'email', 'dietaryRequirement', 'companyName', 'action'];
+  dataSource = new MatTableDataSource();
   base_url:string;
   dtOptions: DataTables.Settings = {};
   data: any;
@@ -43,6 +51,8 @@ export class RegistrationComponent implements OnInit , AfterViewInit {
 
   ngAfterViewInit() {
     this.dtTrigger.next();
+    this.dataSource.sort = this.sort;
+    this.dataSource.paginator = this.pagination;
   }
 
   ngOnDestroy(): void {
@@ -152,16 +162,26 @@ export class RegistrationComponent implements OnInit , AfterViewInit {
     this.http.get(`${this.base_url}`).subscribe((response: Response) => {
       this.data = response;
       this.results = this.data.result;
+      this.reacreateMatTableData(this.results);
     });
+  }
+
+  reacreateMatTableData(data) {
+    this.dataSource = new MatTableDataSource(data);
+    this.dataSource.sort = this.sort;
+    this.dataSource.paginator = this.pagination;
   }
 
   resetDelegates() {
     this.createForm.setValue({
-      courseName: '',
-      courseDescription: '',
-      courseCode: '',
-      trainingVenueSelected: '',
-      isTrainingFreeOrPaid: ''
+        firstName: '',
+        lastName: '',
+        phoneNumber: '',
+        email: '',
+        dietaryRequirement: '',
+        companyName: '',
+        delegatePhysicalAddress: '',
+        delegatePostalAddress: ''
     });
   }
 

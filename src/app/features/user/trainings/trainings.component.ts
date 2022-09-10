@@ -1,17 +1,24 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
-import { FormGroup, FormBuilder } from '@angular/forms';
+import { Component, AfterViewInit, OnInit, ViewChild } from '@angular/core';
+import { MatTableDataSource } from '@angular/material/table';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
 import { HttpClient } from '@angular/common/http';
 import { Subject } from 'rxjs';
 import { ExportToCsv } from 'export-to-csv';
 import { DatePipe } from '@angular/common';
 
-declare var jQuery: any;
+declare var $: any;
 @Component({
   selector: 'app-users',
   templateUrl: './trainings.component.html',
   styleUrls: ['./trainings.component.css']
 })
 export class TrainingsComponent implements OnInit, AfterViewInit {
+  @ViewChild(MatSort, { static: false }) sort: MatSort;
+  @ViewChild(MatPaginator, { static: false }) pagination: MatPaginator;
+  displayedColumns: string[] = ['trainingID', 'trainingName', 'trainingDate', 'trainingVenue', 'noOfSeatLeft', 'trainingCost', 'closingDate', 'action'];
+  dataSource = new MatTableDataSource();
   base_url:string;
   dtOptions: DataTables.Settings = {};
   data: any;
@@ -38,6 +45,8 @@ export class TrainingsComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit() {
     this.dtTrigger.next();
+    this.dataSource.sort = this.sort;
+    this.dataSource.paginator = this.pagination;
   }
 
   ngOnDestroy(): void {
@@ -95,11 +104,11 @@ export class TrainingsComponent implements OnInit, AfterViewInit {
     if (this.training) {
       const updatedUser = {
         'trainingName': this.createForm.value.trainingName,
-        'trainingDate': this.createForm.value.trainingDate,
+        'trainingDate': this.convertDateToLongString(this.createForm.value.trainingDate),
         'trainingVenue': this.createForm.value.trainingVenue,
         'noOfSeatLeft': this.createForm.value.noOfSeatLeft,
         'trainingCost': this.createForm.value.trainingCost,
-        'closingDate': this.createForm.value.closingDate
+        'closingDate': this.convertDateToLongString(this.createForm.value.closingDate)
       };
   
       this.http.put(`${this.base_url}/` + this.training.trainingID, updatedUser).subscribe((response: Response) => {
@@ -110,11 +119,11 @@ export class TrainingsComponent implements OnInit, AfterViewInit {
       const course = {
         'trainingID': 0,
         'trainingName': this.createForm.value.trainingName,
-        'trainingDate': this.createForm.value.trainingDate,
+        'trainingDate': this.convertDateToLongString(this.createForm.value.trainingDate),
         'trainingVenue': this.createForm.value.trainingVenue,
         'noOfSeatLeft': this.createForm.value.noOfSeatLeft,
         'trainingCost': this.createForm.value.trainingCost,
-        'closingDate': this.createForm.value.closingDate
+        'closingDate': this.convertDateToLongString(this.createForm.value.trainingDate)
       };
   
       this.http.post(`${this.base_url}`, course).subscribe((response: Response) => {
@@ -135,11 +144,24 @@ export class TrainingsComponent implements OnInit, AfterViewInit {
     return formattedDate.transform(date, 'dd/MM/yyyy');
   }
 
+  convertDateToLongString(date) {
+    const formattedDate: DatePipe = new DatePipe('en-US');
+    const newDate = formattedDate.transform(date, 'dd/MM/yyyy hh:mm:ss');
+    return new Date(newDate.toString().split('GMT')[0]+' UTC').toISOString()
+  }
+
   LoadTrainings() {
     this.http.get(`${this.base_url}`).subscribe((response: Response) => {
       this.data = response;
       this.results = this.data.result;
+      this.reacreateMatTableData(this.results);
     });
+  }
+
+  reacreateMatTableData(data) {
+    this.dataSource = new MatTableDataSource(data);
+    this.dataSource.sort = this.sort;
+    this.dataSource.paginator = this.pagination;
   }
 
   resetTraining() {
